@@ -12,7 +12,6 @@ import android.view.MotionEvent;
 import android.view.ScaleGestureDetector;
 import android.view.View;
 import android.widget.OverScroller;
-import android.widget.Scroller;
 
 /**
  * @Author: Jack Ou
@@ -118,8 +117,8 @@ public class PhotoView extends View {
         @Override
         public boolean onScale(ScaleGestureDetector detector) {
             //解决原始大小不能缩放
-            Log.e("JackOu","onScale ====== current:" + currentScale + " smallScale:" + smallScale + " largeScale:" + largeScale + " isLarge:" + isLarge);
-            if (((currentScale == smallScale) && isLarge) || (currentScale > smallScale && !isLarge)){
+            Log.e("JackOu", "onScale ====== current:" + currentScale + " smallScale:" + smallScale + " largeScale:" + largeScale + " isLarge:" + isLarge);
+            if (((currentScale == smallScale) && isLarge) || (currentScale > smallScale && !isLarge)) {
                 isLarge = !isLarge;
             }
             //detector.getScaleFactor();获得缩放因子
@@ -260,11 +259,14 @@ public class PhotoView extends View {
             scaleAnimator = ObjectAnimator.ofFloat(this, "currentScale", 0);
             scaleAnimator.setDuration(2000);
         }
-//        if (currentScale > smallScale && !isLarge){
-//            scaleAnimator.setFloatValues(smallScale, currentScale);
-//        } else if (currentScale)
-        //scaleAnimator.setFloatValues(smallScale, largeScale);
-        Log.e("JackOu","current:" + currentScale + " smallScale:" + smallScale + " largeScale:" + largeScale);
+        Log.e("JackOu", "current:" + currentScale + " smallScale:" + smallScale + " largeScale:" + largeScale + " isLarge:" + isLarge);
+        if (currentScale > smallScale && !isLarge) {
+            scaleAnimator.setFloatValues(smallScale, currentScale);
+        } else if (currentScale > smallScale && isLarge) {
+            scaleAnimator.setFloatValues(currentScale, largeScale);
+        } else {
+            scaleAnimator.setFloatValues(smallScale, largeScale);
+        }
         return scaleAnimator;
     }
 
